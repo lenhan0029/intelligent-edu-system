@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -27,16 +28,21 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
+        List<String> roles = userPrincipal.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(java.util.stream.Collectors.toList());
+
         return Jwts.builder()
                 .setSubject(Long.toString(userPrincipal.getId()))
                 .claim("username", userPrincipal.getUsername())
                 .claim("email", userPrincipal.getEmail())
+                .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    
+
     public String generateTokenFromUserId(Long userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);

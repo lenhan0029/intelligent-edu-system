@@ -5,7 +5,6 @@ import com.edu.userservice.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,7 +18,7 @@ public class UserProfileController {
     }
 
     @GetMapping("/{id}")
-    public UserProfile getById(@PathVariable UUID id) {
+    public UserProfile getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
@@ -29,7 +28,7 @@ public class UserProfileController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }

@@ -1,0 +1,37 @@
+<div class="user-management">
+  <h2>User Management</h2>
+  
+  <div *ngIf="loading" class="loading">Loading users...</div>
+
+  <table *ngIf="!loading" class="users-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <div class="roles-grid">
+            <label *ngFor="let role of rolesList">
+              <input type="checkbox" 
+                     [checked]="user.newRoles.includes(role)" 
+                     (change)="toggleRole(user, role, $event)">
+              {{ role.replace('ROLE_', '') }}
+            </label>
+          </div>
+        </td>
+        <td>
+          <button class="primary-btn" (click)="updateRoles(user)">Save Roles</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -81,4 +81,18 @@ public class UserManagementService {
         user.setActive(isActive);
         return userRepository.save(user);
     }
+
+    @Transactional
+    public User updateUserRoles(Long userId, List<String> roleNames) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        user.getRoles().clear();
+        for (String roleName : roleNames) {
+            Role role = roleRepository.findByName(roleName)
+                    .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+            user.getRoles().add(role);
+        }
+        return userRepository.save(user);
+    }
 }

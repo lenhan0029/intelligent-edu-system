@@ -47,4 +47,15 @@ public class UserManagementController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
+    @PutMapping("/{id}/roles")
+    public ResponseEntity<?> updateUserRoles(@PathVariable Long id, @RequestBody Map<String, List<String>> request) {
+        try {
+            List<String> roles = request.get("roles");
+            User user = userManagementService.updateUserRoles(id, roles);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
 }

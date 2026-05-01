@@ -9,6 +9,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/finance")
 @RequiredArgsConstructor
+@org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ROLE_FINANCE_MANAGER', 'ROLE_ADMIN')")
 public class TuitionController {
     private final TuitionService service;
     @GetMapping public List<Tuition> getAll() { return service.getAll(); }
