@@ -1,0 +1,51 @@
+<div class="finance-container">
+  <div class="header">
+    <h1>Financial Summary</h1>
+    <p>Monitor your tuition fees, payments, and financial aid</p>
+  </div>
+
+  <div class="summary-cards">
+    <div class="card balance">
+      <span class="label">Total Balance</span>
+      <span class="value">${{ getTotalAmount() | number:'1.2-2' }}</span>
+      <span class="trend">Due by next month</span>
+    </div>
+    <div class="card paid">
+      <span class="label">Total Paid</span>
+      <span class="value">$0.00</span>
+      <span class="trend">Academic Year 2024</span>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading records...</p>
+  </div>
+
+  <div class="records-section" *ngIf="!loading">
+    <h3>Transaction History</h3>
+    <table class="finance-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tuitions">
+          <td>{{ item.description || 'Tuition Fee' }}</td>
+          <td>{{ (item.dueDate | date:'mediumDate') || 'TBD' }}</td>
+          <td>${{ item.amount | number:'1.2-2' }}</td>
+          <td><span class="status-badge" [class.unpaid]="true">Unpaid</span></td>
+          <td><button class="pay-btn">Pay Now</button></td>
+        </tr>
+        <tr *ngIf="tuitions.length === 0">
+          <td colspan="5" class="empty-row">No financial records found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

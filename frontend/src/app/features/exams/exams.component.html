@@ -1,0 +1,38 @@
+<div class="exams-container">
+  <div class="header">
+    <h1>Exams & Assessments</h1>
+    <p>Track your upcoming tests and review past results</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading exams...</p>
+  </div>
+
+  <div *ngIf="!loading && exams.length === 0" class="empty-state">
+    <span class="icon">📝</span>
+    <h3>No exams scheduled</h3>
+    <p>You don't have any upcoming exams at the moment.</p>
+  </div>
+
+  <div class="exams-list" *ngIf="!loading && exams.length > 0">
+    <div class="exam-item" *ngFor="let exam of exams">
+      <div class="exam-status" [class.upcoming]="true">Upcoming</div>
+      <div class="exam-info">
+        <h3 class="exam-name">{{ exam.name }}</h3>
+        <p class="exam-subject">{{ exam.courseName || 'General Subject' }}</p>
+      </div>
+      <div class="exam-details">
+        <div class="detail">
+          <span class="label">Date:</span>
+          <span class="value">{{ (exam.date | date:'mediumDate') || 'TBD' }}</span>
+        </div>
+        <div class="detail">
+          <span class="label">Duration:</span>
+          <span class="value">{{ exam.durationMinutes || 60 }} mins</span>
+        </div>
+      </div>
+      <button class="action-btn">Prepare</button>
+    </div>
+  </div>
+</div>

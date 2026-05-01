@@ -18,15 +18,31 @@ public class UserEventConsumer {
 
     @KafkaListener(topics = "user-registered", groupId = "user-service-group")
     public void consumeUserRegisteredEvent(UserRegisteredEvent event) {
-        log.info("Received user registered event: {}", event);
+        try {
+            log.info("Received user registered event for userId: {}", event.getId());
 
-        UserProfile profile = UserProfile.builder()
-                .id(Long.parseLong(event.getId()))
-                .fullName(event.getFullName())
-                .createdAt(new Date())
-                .build();
+            Long userId = Long.parseLong(event.getId());
 
-        userProfileRepository.save(profile);
-        log.info("Created user profile for user id: {}", event.getId());
+            // Skip if profile already exists to prevent duplicate constraint errors
+            if (userProfileRepository.existsById(userId)) {
+                log.warn("UserProfile already exists for userId: {}, skipping.", userId);
+                return;
+            }
+
+            UserProfile profile = UserProfile.builder()
+                    .id(userId)
+                    .fullName(event.getFullName())
+                    .createdAt(new Date())
+                    .build();
+
+            userProfileRepository.save(profile);
+            log.info("Created user profile for userId: {}", userId);
+
+        } catch (Exception e) {
+            // Log the error but do NOT rethrow - prevents Kafka from retrying indefinitely
+            // which would cause high CPU usage on Kafka broker
+            log.error("Failed to process user-registered event for userId: {}. Error: {}",
+                    event != null ? event.getId() : "null", e.getMessage(), e);
+        }
     }
 }

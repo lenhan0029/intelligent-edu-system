@@ -1,0 +1,27 @@
+<div class="schedule-container">
+  <div class="header">
+    <h1>Weekly Schedule</h1>
+    <p>Your academic calendar and class timings</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading schedule...</p>
+  </div>
+
+  <div class="schedule-grid" *ngIf="!loading">
+    <div class="day-column" *ngFor="let day of days">
+      <div class="day-header">{{ day }}</div>
+      <div class="day-content">
+        <div class="schedule-card" *ngFor="let item of getSchedulesForDay(day)">
+          <div class="time">{{ item.startTime }} - {{ item.endTime }}</div>
+          <div class="subject">{{ item.subject }}</div>
+          <div class="room">Room: {{ item.room || 'Online' }}</div>
+        </div>
+        <div class="no-classes" *ngIf="getSchedulesForDay(day).length === 0">
+          No classes
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

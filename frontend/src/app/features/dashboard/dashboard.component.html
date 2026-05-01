@@ -1,67 +1,79 @@
 <div class="dashboard">
-  <nav class="navbar">
-    <div class="brand">
-      <div class="logo-icon">S</div>
-      <h1>Smart Edu</h1>
-    </div>
-    <div class="user-info">
-      <div class="avatar-circle">{{ auth.user()?.username?.charAt(0).toUpperCase() }}</div>
-      <span>{{ auth.user()?.username }}</span>
-      <button class="logout-btn" (click)="logout()">Logout</button>
-    </div>
-  </nav>
-
   <main class="content">
     <header class="header-section">
       <div class="welcome-text">
-        <h2>Learning Journey</h2>
-        <p>Explore your current courses and achievements.</p>
+        <h2>Welcome back, {{ auth.user()?.username }}!</h2>
+        <p>Here's what's happening in your learning journey today.</p>
       </div>
       <div class="actions">
-        <button class="primary-btn">Browse New Courses</button>
+        <button class="primary-btn">New Application</button>
       </div>
     </header>
 
     <div class="stats-grid">
       <div class="stat-card blue">
-        <span class="label">Total Courses</span>
-        <span class="value">{{ courses().length }}</span>
+        <div class="stat-icon">📚</div>
+        <div class="stat-info">
+          <span class="label">My Courses</span>
+          <span class="value">{{ courses().length }}</span>
+        </div>
       </div>
       <div class="stat-card purple">
-        <span class="label">Active Exams</span>
-        <span class="value">0</span>
+        <div class="stat-icon">📝</div>
+        <div class="stat-info">
+          <span class="label">Exams</span>
+          <span class="value">{{ examsCount() }}</span>
+        </div>
       </div>
       <div class="stat-card green">
-        <span class="label">Certificates</span>
-        <span class="value">0</span>
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <span class="label">Classes Today</span>
+          <span class="value">{{ schedulesCount() }}</span>
+        </div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-icon">💳</div>
+        <div class="stat-info">
+          <span class="label">Finance Due</span>
+          <span class="value">${{ financeTotal() | number:'1.2-2' }}</span>
+        </div>
       </div>
     </div>
 
     <section class="courses-section">
-      <h3>Your Courses</h3>
+      <div class="section-header">
+        <h3>Enrolled Courses</h3>
+        <a routerLink="/courses" class="see-all">View All</a>
+      </div>
       
       @if (loading()) {
         <div class="loading-state">
           <div class="spinner"></div>
-          <p>Loading your courses...</p>
+          <p>Gathering your data...</p>
         </div>
       } @else if (courses().length === 0) {
         <div class="empty-state">
+          <span class="icon">📚</span>
           <p>No courses found. Start your journey by browsing new courses!</p>
+          <button class="browse-btn">Browse Courses</button>
         </div>
       } @else {
         <div class="courses-grid">
-          @for (course of courses(); track course.id) {
+          @for (course of courses().slice(0, 3); track course.id) {
             <div class="course-card">
               <div class="course-image">
+                <img [src]="'https://ui-avatars.com/api/?name=' + course.name + '&background=random&color=fff&size=200'" alt="Course">
                 <div class="tag">{{ course.status || 'Active' }}</div>
               </div>
               <div class="course-body">
                 <h4>{{ course.name }}</h4>
                 <p>{{ course.description || 'No description available for this course.' }}</p>
                 <div class="course-footer">
-                  <span class="teacher-name">ID: {{ course.teacherId?.substring(0,8) }}...</span>
-                  <button class="view-btn">View Lessons</button>
+                  <div class="progress-bar">
+                    <div class="progress" style="width: 45%"></div>
+                  </div>
+                  <span class="percentage">45%</span>
                 </div>
               </div>
             </div>

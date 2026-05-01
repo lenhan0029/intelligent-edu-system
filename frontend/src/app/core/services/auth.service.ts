@@ -58,4 +58,13 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.token();
   }
+
+  getRoles(): string[] {
+    const currentUser = this.user();
+    return currentUser && currentUser.roles ? currentUser.roles : [];
+  }
+
+  hasRole(role: string): boolean {
+    return this.getRoles().includes(role);
+  }
 }

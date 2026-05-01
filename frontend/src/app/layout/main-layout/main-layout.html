@@ -23,10 +23,21 @@
         <span class="icon">📅</span>
         <span class="label" *ngIf="!isSidebarCollapsed">Schedule</span>
       </a>
-      <a routerLink="/finance" routerLinkActive="active" class="nav-item">
-        <span class="icon">💳</span>
-        <span class="label" *ngIf="!isSidebarCollapsed">Finance</span>
-      </a>
+      
+      <!-- Protected Routes -->
+      <ng-container *ngIf="authService.hasRole('ROLE_FINANCE_MANAGER') || authService.hasRole('ROLE_ADMIN')">
+        <a routerLink="/finance" routerLinkActive="active" class="nav-item">
+          <span class="icon">💳</span>
+          <span class="label" *ngIf="!isSidebarCollapsed">Finance</span>
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="authService.hasRole('ROLE_ADMIN')">
+        <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+          <span class="icon">👥</span>
+          <span class="label" *ngIf="!isSidebarCollapsed">User Management</span>
+        </a>
+      </ng-container>
     </nav>
 
     <div class="sidebar-footer">
@@ -59,7 +70,7 @@
         <div class="user-profile">
           <div class="user-info">
             <span class="user-name">{{ userName }}</span>
-            <span class="user-role">Student</span>
+            <span class="user-role">{{ authService.getRoles()[0]?.replace('ROLE_', '') || 'Student' }}</span>
           </div>
           <div class="avatar">
             <img src="https://ui-avatars.com/api/?name={{userName}}&background=6366f1&color=fff" alt="User">

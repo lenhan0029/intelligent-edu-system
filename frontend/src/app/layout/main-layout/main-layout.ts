@@ -14,7 +14,7 @@ export class MainLayout implements OnInit {
   isSidebarCollapsed = false;
   userName = 'User';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     const user = this.authService.user();
