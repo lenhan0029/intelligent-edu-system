@@ -1,0 +1,10 @@
+package com.edu.auth.repository;
+
+import com.edu.auth.entity.UserProvider;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserProviderRepository extends JpaRepository<UserProvider, Long> {
+    Optional<UserProvider> findByProviderNameAndProviderId(String providerName, String providerId);
+}

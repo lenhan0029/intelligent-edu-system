@@ -1,0 +1,103 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+        - id: auth-service-oauth2
+          uri: lb://auth-service
+          predicates:
+            - Path=/oauth2/**,/login/oauth2/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+        - id: course-service
+          uri: lb://course-service
+          predicates:
+            - Path=/api/courses/**
+        - id: exam-service
+          uri: lb://exam-service
+          predicates:
+            - Path=/api/exams/**
+        - id: schedule-service
+          uri: lb://schedule-service
+          predicates:
+            - Path=/api/schedules/**
+        - id: finance-service
+          uri: lb://finance-service
+          predicates:
+            - Path=/api/finance/**
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**
+        - id: file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/api/files/**
+        - id: log-service
+          uri: lb://log-service
+          predicates:
+            - Path=/api/logs/**
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /api/auth/v3/api-docs
+      - name: User Service
+        url: /api/users/v3/api-docs
+      - name: Course Service
+        url: /api/courses/v3/api-docs
+      - name: Exam Service
+        url: /api/exams/v3/api-docs
+      - name: Finance Service
+        url: /api/finance/v3/api-docs
+      - name: Notification Service
+        url: /api/notifications/v3/api-docs
+      - name: File Service
+        url: /api/files/v3/api-docs
+      - name: Log Service
+        url: /api/logs/v3/api-docs
+  cache:
+    disabled: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
+    com.netflix.discovery: WARN
+    com.netflix.eureka: WARN

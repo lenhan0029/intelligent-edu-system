@@ -1,0 +1,1 @@
+package com.edu.scheduleservice.repository; import com.edu.scheduleservice.entity.Attendance; import org.springframework.data.jpa.repository.JpaRepository; import java.util.UUID; public interface AttendanceRepository extends JpaRepository<Attendance, UUID> {}
