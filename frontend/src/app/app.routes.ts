@@ -5,6 +5,10 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { RoleGuard } from './core/guards/role.guard';
 import { UserManagement } from './features/admin/user-management/user-management';
+import { CoursesComponent } from './features/courses/courses.component';
+import { ExamsComponent } from './features/exams/exams.component';
+import { ScheduleComponent } from './features/schedule/schedule.component';
+import { FinanceComponent } from './features/finance/finance.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,6 +18,15 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'courses', component: CoursesComponent },
+      { path: 'exams', component: ExamsComponent },
+      { path: 'schedule', component: ScheduleComponent },
+      { 
+        path: 'finance', 
+        component: FinanceComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ROLE_FINANCE_MANAGER', 'ROLE_ADMIN'] }
+      },
       { 
         path: 'admin/users', 
         component: UserManagement,

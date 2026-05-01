@@ -1,4 +1,5 @@
 package com.edu.financeservice.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
@@ -12,6 +13,7 @@ public class Tuition {
     private UUID id;
     private UUID studentId;
     private UUID courseId;
+    private String description;
     private BigDecimal amount;
     private String status;
     private Date dueDate;

@@ -1,7 +1,7 @@
 package com.edu.scheduleservice.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -11,7 +11,9 @@ public class Schedule {
     private UUID id;
     private UUID courseId;
     private UUID teacherId;
+    private String subject;
     private String room;
-    private Date startTime;
-    private Date endTime;
+    private String dayOfWeek;
+    private String startTime;
+    private String endTime;
 }
