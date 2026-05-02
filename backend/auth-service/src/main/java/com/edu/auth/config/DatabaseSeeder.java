@@ -18,12 +18,26 @@ public class DatabaseSeeder {
     @Bean
     CommandLineRunner initDatabase(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            String[] roles = {"ROLE_USER", "ROLE_STUDENT", "ROLE_PARENT", "ROLE_TEACHER", "ROLE_CONTENT_CREATOR", "ROLE_MODERATOR", "ROLE_FINANCE_MANAGER", "ROLE_ADMIN"};
+            String[] roles = {"ROLE_USER", "ROLE_STUDENT", "ROLE_PARENT", "ROLE_TEACHER", "ROLE_CONTENT_CREATOR", "ROLE_MODERATOR", "ROLE_FINANCE_MANAGER", "ROLE_ADMIN", "ROLE_SUPERADMIN"};
             
             for (String roleName : roles) {
                 if (!roleRepository.existsByName(roleName)) {
                     roleRepository.save(Role.builder().name(roleName).build());
                 }
+            }
+
+            if (!userRepository.existsByUsername("superadmin")) {
+                Set<Role> superAdminRoles = new HashSet<>();
+                superAdminRoles.add(roleRepository.findByName("ROLE_SUPERADMIN").get());
+                
+                User superadmin = User.builder()
+                        .username("superadmin")
+                        .email("superadmin@smartedu.com")
+                        .passwordHash(passwordEncoder.encode("superadmin123"))
+                        .isActive(true)
+                        .roles(superAdminRoles)
+                        .build();
+                userRepository.save(superadmin);
             }
 
             if (!userRepository.existsByUsername("admin")) {

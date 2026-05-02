@@ -25,13 +25,13 @@ export const routes: Routes = [
         path: 'finance', 
         component: FinanceComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ROLE_FINANCE_MANAGER', 'ROLE_ADMIN'] }
+        data: { roles: ['ROLE_FINANCE_MANAGER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN'] }
       },
       { 
         path: 'admin/users', 
         component: UserManagement,
         canActivate: [RoleGuard],
-        data: { roles: ['ROLE_ADMIN'] }
+        data: { roles: ['ROLE_ADMIN', 'ROLE_SUPERADMIN'] }
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +25,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final String jwtSecret = "dGhpc2lzYXNlY3JldGtleXdoaWNoaXNsb25nZW5vdWdodG9iZXNlY3VyZTEyMzQ1Njc4OTA=";
+    @Value("${app.jwt.secret:dGhpc2lzYXNlY3JldGtleXdoaWNoaXNsb25nZW5vdWdodG9iZXNlY3VyZTEyMzQ1Njc4OTA=}")
+    private String jwtSecret;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -36,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && validateToken(jwt)) {
                 Claims claims = getClaimsFromJWT(jwt);
                 String userId = claims.getSubject();
-                List<String> roles = claims.get("roles", List.class);
+                List<String> roles = (List<String>) claims.get("roles");
 
                 if (userId != null && roles != null) {
                     List<SimpleGrantedAuthority> authorities = roles.stream()

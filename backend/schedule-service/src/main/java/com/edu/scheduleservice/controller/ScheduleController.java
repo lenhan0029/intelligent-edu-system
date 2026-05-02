@@ -1,7 +1,9 @@
 package com.edu.scheduleservice.controller;
+
 import com.edu.scheduleservice.entity.Schedule;
 import com.edu.scheduleservice.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +13,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ScheduleController {
     private final ScheduleService service;
-    @GetMapping public List<Schedule> getAll() { return service.getAll(); }
-    @GetMapping("/{id}") public Schedule getById(@PathVariable UUID id) { return service.getById(id); }
-    @PostMapping public Schedule create(@RequestBody Schedule entity) { return service.save(entity); }
+
+    @GetMapping
+    public List<Schedule> getAll() {
+        return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Schedule getById(@PathVariable UUID id) {
+        return service.getById(id);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
+    public Schedule create(@RequestBody Schedule entity) {
+        return service.save(entity);
+    }
 }

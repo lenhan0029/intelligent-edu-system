@@ -24,7 +24,7 @@ public class CourseController {
     }
 
     @PostMapping
-    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_CONTENT_CREATOR', 'ROLE_ADMIN')")
+    @org.springframework.security.access.prepost.PreAuthorize("hasAnyRole('TEACHER', 'CONTENT_CREATOR', 'ADMIN', 'SUPERADMIN')")
     public Course create(@RequestBody Course course) {
         return service.save(course);
     }

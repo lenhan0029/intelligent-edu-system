@@ -1,37 +1,65 @@
 <div class="user-management">
-  <h2>User Management</h2>
+  <div class="header">
+    <h2>User Management</h2>
+    <p>Manage users, assign roles, and control account status.</p>
+  </div>
   
-  <div *ngIf="loading" class="loading">Loading users...</div>
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
 
-  <table *ngIf="!loading" class="users-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>
-          <div class="roles-grid">
-            <label *ngFor="let role of rolesList">
-              <input type="checkbox" 
-                     [checked]="user.newRoles.includes(role)" 
-                     (change)="toggleRole(user, role, $event)">
-              {{ role.replace('ROLE_', '') }}
-            </label>
-          </div>
-        </td>
-        <td>
-          <button class="primary-btn" (click)="updateRoles(user)">Save Roles</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-container" *ngIf="!loading">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Current Roles</th>
+          <th>Assign New Roles</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users" [class.locked]="!user.active">
+          <td>
+            <div class="user-cell">
+              <span class="username">{{ user.username }}</span>
+              <span *ngIf="!user.active" class="lock-icon">🔒 Locked</span>
+            </div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>
+            <div class="current-roles">
+              <span *ngFor="let r of user.roles" class="role-badge">{{ r.name.replace('ROLE_', '') }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="roles-editor" *ngIf="authService.canManage(user.roles)">
+              <div class="roles-grid">
+                <label *ngFor="let role of rolesList" class="role-checkbox">
+                  <input type="checkbox" 
+                         [checked]="user.newRoles.includes(role)" 
+                         (change)="toggleRole(user, role, $event)">
+                  {{ role.replace('ROLE_', '') }}
+                </label>
+              </div>
+              <button class="save-btn" (click)="updateRoles(user)">Update</button>
+            </div>
+            <span *ngIf="!authService.canManage(user.roles)" class="no-permission">Read-only</span>
+          </td>
+          <td>
+            <div class="action-buttons" *ngIf="authService.canManage(user.roles)">
+              <button [class]="user.active ? 'lock-btn' : 'unlock-btn'" 
+                      (click)="toggleUserStatus(user)"
+                      [title]="user.active ? 'Lock User' : 'Unlock User'">
+                {{ user.active ? '🔒 Lock' : '🔓 Unlock' }}
+              </button>
+              <button class="delete-btn" (click)="deleteUser(user)" title="Delete User">🗑️ Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

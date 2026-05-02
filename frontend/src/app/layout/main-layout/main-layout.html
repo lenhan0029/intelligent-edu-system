@@ -15,24 +15,28 @@
         <span class="icon">📚</span>
         <span class="label" *ngIf="!isSidebarCollapsed">My Courses</span>
       </a>
-      <a routerLink="/exams" routerLinkActive="active" class="nav-item">
-        <span class="icon">📝</span>
-        <span class="label" *ngIf="!isSidebarCollapsed">Exams</span>
-      </a>
-      <a routerLink="/schedule" routerLinkActive="active" class="nav-item">
-        <span class="icon">📅</span>
-        <span class="label" *ngIf="!isSidebarCollapsed">Schedule</span>
-      </a>
+      
+      <!-- Management for Teachers/Admins -->
+      <ng-container *ngIf="authService.isAtLeast('ROLE_TEACHER')">
+        <a routerLink="/exams" routerLinkActive="active" class="nav-item">
+          <span class="icon">📝</span>
+          <span class="label" *ngIf="!isSidebarCollapsed">Manage Exams</span>
+        </a>
+        <a routerLink="/schedule" routerLinkActive="active" class="nav-item">
+          <span class="icon">📅</span>
+          <span class="label" *ngIf="!isSidebarCollapsed">Manage Schedule</span>
+        </a>
+      </ng-container>
       
       <!-- Protected Routes -->
-      <ng-container *ngIf="authService.hasRole('ROLE_FINANCE_MANAGER') || authService.hasRole('ROLE_ADMIN')">
+      <ng-container *ngIf="authService.isAtLeast('ROLE_FINANCE_MANAGER')">
         <a routerLink="/finance" routerLinkActive="active" class="nav-item">
           <span class="icon">💳</span>
           <span class="label" *ngIf="!isSidebarCollapsed">Finance</span>
         </a>
       </ng-container>
 
-      <ng-container *ngIf="authService.hasRole('ROLE_ADMIN')">
+      <ng-container *ngIf="authService.isAtLeast('ROLE_ADMIN')">
         <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
           <span class="icon">👥</span>
           <span class="label" *ngIf="!isSidebarCollapsed">User Management</span>

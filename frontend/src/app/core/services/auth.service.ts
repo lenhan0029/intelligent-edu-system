@@ -2,6 +2,18 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
+const ROLE_WEIGHTS: Record<string, number> = {
+  'ROLE_SUPERADMIN': 100,
+  'ROLE_ADMIN': 80,
+  'ROLE_TEACHER': 60,
+  'ROLE_FINANCE_MANAGER': 60,
+  'ROLE_CONTENT_CREATOR': 60,
+  'ROLE_MODERATOR': 60,
+  'ROLE_STUDENT': 20,
+  'ROLE_PARENT': 20,
+  'ROLE_USER': 10
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -66,5 +78,26 @@ export class AuthService {
 
   hasRole(role: string): boolean {
     return this.getRoles().includes(role);
+  }
+
+  getMaxRoleWeight(): number {
+    const roles = this.getRoles();
+    return Math.max(...roles.map(r => ROLE_WEIGHTS[r] || 0), 0);
+  }
+
+  isAtLeast(role: string): boolean {
+    return this.getMaxRoleWeight() >= (ROLE_WEIGHTS[role] || 0);
+  }
+
+  canManage(targetUserRoles: any[]): boolean {
+    const myMaxWeight = this.getMaxRoleWeight();
+    const targetRoles = targetUserRoles.map(r => typeof r === 'string' ? r : r.name);
+    const targetMaxWeight = Math.max(...targetRoles.map(r => ROLE_WEIGHTS[r] || 0), 0);
+    
+    if (this.hasRole('ROLE_SUPERADMIN')) return true;
+    if (this.hasRole('ROLE_ADMIN')) {
+      return targetMaxWeight < 80; // Admin can manage everyone EXCEPT other Admins and Superadmins
+    }
+    return false;
   }
 }
