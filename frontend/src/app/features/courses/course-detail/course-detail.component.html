@@ -1,0 +1,108 @@
+<div class="course-detail-container" *ngIf="course">
+  <!-- Back Button & Breadcrumbs -->
+  <div style="margin-bottom: 2rem;">
+    <button class="btn" style="background:none; border:none; padding:0; color: var(--primary);" routerLink="/courses">
+      <i class="fas fa-arrow-left"></i> Back to Courses
+    </button>
+  </div>
+
+  <div class="card" style="margin-bottom: 2rem; padding: 2rem;">
+    <div style="display:flex; gap: 2.5rem; align-items: flex-start;">
+      <div class="course-img" style="width: 300px; height: 180px; border-radius: 1rem; overflow:hidden; flex-shrink:0;">
+        <img [src]="course.thumbnail" style="width:100%; height:100%; object-fit:cover;" alt="">
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <span class="badge badge-indigo" style="margin-bottom: 0.5rem;">{{ course.category }}</span>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">{{ course.name }}</h1>
+            <div style="display:flex; align-items:center; gap: 1.5rem; color: var(--text-muted); font-size: 0.875rem;">
+              <span><i class="fas fa-user-tie"></i> Prof. {{ course.teacherName }}</span>
+              <span><i class="fas fa-users"></i> 156 Students</span>
+              <span><i class="fas fa-star" style="color: var(--warning);"></i> 4.8 (120 reviews)</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+             <div style="font-size: 2rem; font-weight:700; color: var(--primary); margin-bottom: 0.5rem;">${{ course.price }}</div>
+             <button class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1rem;">Enroll in Course</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div style="border-bottom: 1px solid var(--border); display:flex; gap: 2rem; margin-bottom: 2rem;">
+    <button class="tab-btn" [class.active]="activeTab === 'overview'" (click)="activeTab = 'overview'">Overview</button>
+    <button class="tab-btn" [class.active]="activeTab === 'lessons'" (click)="activeTab = 'lessons'">Lessons</button>
+    <button class="tab-btn" [class.active]="activeTab === 'students'" (click)="activeTab = 'students'">Students</button>
+    <button class="tab-btn" [class.active]="activeTab === 'exams'" (click)="activeTab = 'exams'">Exams</button>
+  </div>
+
+  <!-- Tab Content -->
+  <div [ngSwitch]="activeTab">
+    <!-- Overview -->
+    <div *ngSwitchCase="'overview'" class="card">
+       <h3>Course Description</h3>
+       <p style="margin-top: 1rem; color: var(--text-muted); line-height: 1.6;">{{ course.description }}</p>
+       
+       <h3 style="margin-top: 2rem;">What you will learn</h3>
+       <ul style="margin-top: 1rem; display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; list-style:none;">
+          <li *ngFor="let item of [1,2,3,4]" style="display:flex; align-items:center; gap: 0.5rem;">
+             <i class="fas fa-check-circle" style="color: var(--success);"></i>
+             <span>Key learning outcome #{{item}}</span>
+          </li>
+       </ul>
+    </div>
+
+    <!-- Lessons -->
+    <div *ngSwitchCase="'lessons'">
+       <div class="card" style="padding:0;">
+          <div *ngFor="let lesson of lessons; let i = index" 
+               style="display:flex; justify-content:space-between; align-items:center; padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);">
+             <div style="display:flex; align-items:center; gap: 1.5rem;">
+                <div style="width: 32px; height: 32px; background: var(--bg-main); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:0.875rem;">
+                   {{i + 1}}
+                </div>
+                <div>
+                   <div style="font-weight:600;">{{ lesson.title }}</div>
+                   <div style="font-size:0.75rem; color: var(--text-muted);">{{ lesson.duration }} • {{ lesson.type }}</div>
+                </div>
+             </div>
+             <button class="btn" style="border: 1px solid var(--border);"><i class="fas fa-play"></i> Watch</button>
+          </div>
+       </div>
+    </div>
+
+    <!-- Students -->
+    <div *ngSwitchCase="'students'" class="data-table-container">
+       <table class="data-table">
+          <thead>
+             <tr>
+                <th>Student</th>
+                <th>Enrollment Date</th>
+                <th>Progress</th>
+                <th>Grade</th>
+             </tr>
+          </thead>
+          <tbody>
+             <tr *ngFor="let s of [1,2,3,4,5]">
+                <td>
+                   <div style="display:flex; align-items:center; gap: 0.75rem;">
+                      <div class="avatar" style="width:24px; height:24px;"><img src="https://ui-avatars.com/api/?name=Student" alt=""></div>
+                      <span style="font-weight:500;">Student Name {{s}}</span>
+                   </div>
+                </td>
+                <td>May 10, 2026</td>
+                <td style="width: 200px;">
+                   <div style="height: 8px; background: var(--border); border-radius: 4px; overflow:hidden;">
+                      <div [style.width]="(s * 20) + '%'" style="height:100%; background: var(--primary);"></div>
+                   </div>
+                </td>
+                <td><span class="badge badge-success">A</span></td>
+             </tr>
+          </tbody>
+       </table>
+    </div>
+  </div>
+</div>

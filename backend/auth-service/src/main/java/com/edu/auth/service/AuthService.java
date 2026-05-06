@@ -104,7 +104,9 @@ public class AuthService {
                 .id(savedUser.getId().toString())
                 .email(savedUser.getEmail())
                 .username(savedUser.getUsername())
-                .fullName(signUpRequest.getUsername()) // Defaulting to username for now
+                .fullName(signUpRequest.getUsername())
+                .organizationId(savedUser.getOrganizationId() != null ? savedUser.getOrganizationId().toString() : null)
+                .roles(savedUser.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
                 .build();
         
         try {

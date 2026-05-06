@@ -88,6 +88,8 @@ public class UserManagementService {
                 .email(savedUser.getEmail())
                 .username(savedUser.getUsername())
                 .fullName(username)
+                .organizationId(savedUser.getOrganizationId() != null ? savedUser.getOrganizationId().toString() : null)
+                .roles(savedUser.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
                 .build();
         
         try {

@@ -33,6 +33,9 @@ public class User {
     @Column(name = "password_hash")
     private String passwordHash;
 
+    @Column(name = "organization_id")
+    private Long organizationId;
+
     @Column(name = "is_active", nullable = false)
     @Builder.Default
     private boolean isActive = true;

@@ -3,16 +3,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
+import { RolePipe } from '../../shared/pipes/role.pipe';
+
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, RolePipe],
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.css']
 })
 export class MainLayout implements OnInit {
-  isSidebarCollapsed = false;
+  isCollapsed = false;
   userName = 'User';
+  userRole = '';
 
   constructor(public authService: AuthService, private router: Router) {}
 
@@ -20,11 +23,12 @@ export class MainLayout implements OnInit {
     const user = this.authService.user();
     if (user) {
       this.userName = user.username || user.email?.split('@')[0] || 'Student';
+      this.userRole = user.role || '';
     }
   }
 
   toggleSidebar() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+    this.isCollapsed = !this.isCollapsed;
   }
 
   logout() {

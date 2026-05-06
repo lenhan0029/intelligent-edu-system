@@ -6,19 +6,21 @@ const ROLE_WEIGHTS: Record<string, number> = {
   'ROLE_SUPERADMIN': 100,
   'ROLE_ADMIN': 80,
   'ROLE_TEACHER': 60,
-  'ROLE_FINANCE_MANAGER': 60,
-  'ROLE_CONTENT_CREATOR': 60,
-  'ROLE_MODERATOR': 60,
+  'ROLE_REVIEWER': 60,
+  'ROLE_CONTENT_CREATOR': 50,
+  'ROLE_FINANCE': 50,
   'ROLE_STUDENT': 20,
   'ROLE_PARENT': 20,
   'ROLE_USER': 10
 };
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = `${environment.apiUrl}/api/auth`;
   
   user = signal<any>(null);
   token = signal<string | null>(localStorage.getItem('token'));

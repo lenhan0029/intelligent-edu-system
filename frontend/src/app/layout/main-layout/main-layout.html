@@ -1,89 +1,91 @@
 <div class="app-container">
   <!-- Sidebar -->
-  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
     <div class="sidebar-header">
-      <span class="logo-icon">🎓</span>
-      <span class="logo-text" *ngIf="!isSidebarCollapsed">SmartEdu</span>
+      <div class="logo-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <span class="logo-text">EduSmart</span>
     </div>
 
     <nav class="sidebar-nav">
       <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-        <span class="icon">📊</span>
-        <span class="label" *ngIf="!isSidebarCollapsed">Dashboard</span>
+        <i class="fas fa-th-large icon"></i>
+        <span class="label">Dashboard</span>
       </a>
+
+      <!-- Admin Specific -->
+      <ng-container *ngIf="userRole === 'ROLE_ADMIN' || userRole === 'ROLE_SUPERADMIN'">
+        <a routerLink="/users" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-users icon"></i>
+          <span class="label">Users</span>
+        </a>
+        <a routerLink="/organizations" routerLinkActive="active" class="nav-item">
+          <i class="fas fa-school icon"></i>
+          <span class="label">Organizations</span>
+        </a>
+      </ng-container>
+
       <a routerLink="/courses" routerLinkActive="active" class="nav-item">
-        <span class="icon">📚</span>
-        <span class="label" *ngIf="!isSidebarCollapsed">My Courses</span>
+        <i class="fas fa-book icon"></i>
+        <span class="label">Courses</span>
       </a>
-      
-      <!-- Management for Teachers/Admins -->
-      <ng-container *ngIf="authService.isAtLeast('ROLE_TEACHER')">
-        <a routerLink="/exams" routerLinkActive="active" class="nav-item">
-          <span class="icon">📝</span>
-          <span class="label" *ngIf="!isSidebarCollapsed">Manage Exams</span>
-        </a>
-        <a routerLink="/schedule" routerLinkActive="active" class="nav-item">
-          <span class="icon">📅</span>
-          <span class="label" *ngIf="!isSidebarCollapsed">Manage Schedule</span>
-        </a>
-      </ng-container>
-      
-      <!-- Protected Routes -->
-      <ng-container *ngIf="authService.isAtLeast('ROLE_FINANCE_MANAGER')">
-        <a routerLink="/finance" routerLinkActive="active" class="nav-item">
-          <span class="icon">💳</span>
-          <span class="label" *ngIf="!isSidebarCollapsed">Finance</span>
-        </a>
-      </ng-container>
 
-      <ng-container *ngIf="authService.isAtLeast('ROLE_ADMIN')">
-        <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
-          <span class="icon">👥</span>
-          <span class="label" *ngIf="!isSidebarCollapsed">User Management</span>
+      <a routerLink="/schedule" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-calendar-alt icon"></i>
+        <span class="label">Schedule</span>
+      </a>
+
+      <a routerLink="/finance" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-wallet icon"></i>
+        <span class="label">Finance</span>
+      </a>
+
+      <a routerLink="/chat" routerLinkActive="active" class="nav-item">
+        <i class="fas fa-comment-dots icon"></i>
+        <span class="label">Messages</span>
+      </a>
+
+      <div style="margin-top: auto;">
+        <a (click)="logout()" class="nav-item" style="color: var(--error);">
+          <i class="fas fa-sign-out-alt icon"></i>
+          <span class="label">Logout</span>
         </a>
-      </ng-container>
+      </div>
     </nav>
-
-    <div class="sidebar-footer">
-      <button (click)="logout()" class="nav-item logout-btn">
-        <span class="icon">🚪</span>
-        <span class="label" *ngIf="!isSidebarCollapsed">Logout</span>
-      </button>
-    </div>
   </aside>
 
-  <!-- Main Content Area -->
+  <!-- Main Content -->
   <main class="main-area">
-    <!-- Navbar -->
     <header class="navbar">
       <div class="nav-left">
-        <button (click)="toggleSidebar()" class="toggle-btn">
-          <span class="icon">☰</span>
+        <button class="icon-btn" (click)="toggleSidebar()" style="border:none;">
+          <i class="fas fa-bars"></i>
         </button>
         <div class="search-bar">
-          <span class="search-icon">🔍</span>
-          <input type="text" placeholder="Search for courses, materials...">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" placeholder="Search anything...">
         </div>
       </div>
 
       <div class="nav-right">
         <button class="icon-btn">
-          <span class="icon">🔔</span>
+          <i class="fas fa-bell"></i>
           <span class="badge">3</span>
         </button>
+
         <div class="user-profile">
           <div class="user-info">
             <span class="user-name">{{ userName }}</span>
-            <span class="user-role">{{ authService.getRoles()[0]?.replace('ROLE_', '') || 'Student' }}</span>
+            <span class="user-role">{{ userRole | formatRole }}</span>
           </div>
           <div class="avatar">
-            <img src="https://ui-avatars.com/api/?name={{userName}}&background=6366f1&color=fff" alt="User">
+            <img [src]="'https://ui-avatars.com/api/?name=' + userName + '&background=4f46e5&color=fff'" alt="User Avatar">
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Page Content -->
     <div class="page-content">
       <router-outlet></router-outlet>
     </div>

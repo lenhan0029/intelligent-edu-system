@@ -11,8 +11,9 @@ import java.math.BigDecimal;
 public class Tuition {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID studentId;
+    private Long studentId;
     private UUID courseId;
+    private Long organizationId;
     private String description;
     private BigDecimal amount;
     private String status;

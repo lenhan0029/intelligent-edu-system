@@ -12,6 +12,7 @@ public class Schedule {
     private UUID courseId;
     private UUID teacherId;
     private String subject;
+    private Long organizationId;
     private String room;
     private String dayOfWeek;
     private String startTime;

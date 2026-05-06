@@ -2,6 +2,8 @@ package com.edu.courseservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,14 +19,17 @@ public class Enrollment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "student_id")
-    private UUID studentId;
+    @Column(name = "student_id", nullable = false)
+    private Long studentId;
 
-    @Column(name = "course_id")
-    private UUID courseId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 
+    @Column(nullable = false)
     private String status;
     
-    @Column(name = "enrolled_at")
-    private Date enrolledAt;
+    @CreationTimestamp
+    @Column(name = "enrolled_at", updatable = false)
+    private Date enrollmentDate;
 }

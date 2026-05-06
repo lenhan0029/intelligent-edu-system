@@ -1,85 +1,114 @@
-<div class="dashboard">
-  <main class="content">
-    <header class="header-section">
-      <div class="welcome-text">
-        <h2>Welcome back, {{ auth.user()?.username }}!</h2>
-        <p>Here's what's happening in your learning journey today.</p>
-      </div>
-      <div class="actions">
-        <button class="primary-btn">New Application</button>
-      </div>
-    </header>
+<div class="dashboard-container">
+  <div class="header-section" style="margin-bottom: 2rem;">
+    <h1>Welcome back, {{ userName }}</h1>
+    <p style="color: var(--text-muted);">Here's what's happening in your education system today.</p>
+  </div>
 
-    <div class="stats-grid">
-      <div class="stat-card blue">
-        <div class="stat-icon">📚</div>
-        <div class="stat-info">
-          <span class="label">My Courses</span>
-          <span class="value">{{ courses().length }}</span>
-        </div>
+  <!-- Stats Grid -->
+  <div class="dashboard-grid">
+    <div class="card stat-card">
+      <div class="stat-icon" style="background: var(--primary-light); color: var(--primary);">
+        <i class="fas fa-user-graduate"></i>
       </div>
-      <div class="stat-card purple">
-        <div class="stat-icon">📝</div>
-        <div class="stat-info">
-          <span class="label">Exams</span>
-          <span class="value">{{ examsCount() }}</span>
-        </div>
+      <div class="stat-info">
+        <span class="stat-label">Total Students</span>
+        <span class="stat-value">1,284</span>
+        <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 12.5%</span>
       </div>
-      <div class="stat-card green">
-        <div class="stat-icon">📅</div>
-        <div class="stat-info">
-          <span class="label">Classes Today</span>
-          <span class="value">{{ schedulesCount() }}</span>
-        </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon" style="background: var(--secondary-light); color: var(--secondary);">
+        <i class="fas fa-book-open"></i>
       </div>
-      <div class="stat-card orange">
-        <div class="stat-icon">💳</div>
-        <div class="stat-info">
-          <span class="label">Finance Due</span>
-          <span class="value">${{ financeTotal() | number:'1.2-2' }}</span>
+      <div class="stat-info">
+        <span class="stat-label">Active Courses</span>
+        <span class="stat-value">42</span>
+        <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 4 courses</span>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Revenue</span>
+        <span class="stat-value">$12,450</span>
+        <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 8.2%</span>
+      </div>
+    </div>
+
+    <div class="card stat-card">
+      <div class="stat-icon" style="background: var(--warning-light); color: var(--warning);">
+        <i class="fas fa-chalkboard-teacher"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Classes Today</span>
+        <span class="stat-value">18</span>
+        <span class="stat-trend"><i class="fas fa-clock"></i> 6 remaining</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Row -->
+  <div class="content-row">
+    <!-- Chart Section -->
+    <div class="card">
+      <div class="card-header" style="display:flex; justify-content:space-between; margin-bottom: 1.5rem;">
+        <h3>Revenue Growth</h3>
+        <select class="input" style="width: auto; padding: 0.25rem 0.5rem;">
+          <option>Last 7 days</option>
+          <option>Last 30 days</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <!-- Placeholder for Chart.js -->
+        <div style="height: 100%; width: 100%; background: #f8fafc; border-radius: 0.5rem; display: flex; items-center; justify-content: center; border: 1px dashed var(--border);">
+           <span style="color: var(--text-muted);">Growth Chart Visualized Here</span>
         </div>
       </div>
     </div>
 
-    <section class="courses-section">
-      <div class="section-header">
-        <h3>Enrolled Courses</h3>
-        <a routerLink="/courses" class="see-all">View All</a>
+    <!-- Recent Activities -->
+    <div class="card">
+      <div class="card-header" style="margin-bottom: 1.5rem;">
+        <h3>Recent Activity</h3>
       </div>
-      
-      @if (loading()) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <p>Gathering your data...</p>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon" style="background: var(--primary-light); color: var(--primary);">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="activity-details">
+            <div class="activity-text"><strong>John Doe</strong> enrolled in <strong>Advanced Java</strong></div>
+            <div class="activity-time">2 minutes ago</div>
+          </div>
         </div>
-      } @else if (courses().length === 0) {
-        <div class="empty-state">
-          <span class="icon">📚</span>
-          <p>No courses found. Start your journey by browsing new courses!</p>
-          <button class="browse-btn">Browse Courses</button>
+
+        <div class="activity-item">
+          <div class="activity-icon" style="background: var(--success-light); color: var(--success);">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="activity-details">
+            <div class="activity-text"><strong>Payment Success</strong>: #INV-4921 ($150)</div>
+            <div class="activity-time">15 minutes ago</div>
+          </div>
         </div>
-      } @else {
-        <div class="courses-grid">
-          @for (course of courses().slice(0, 3); track course.id) {
-            <div class="course-card">
-              <div class="course-image">
-                <img [src]="'https://ui-avatars.com/api/?name=' + course.name + '&background=random&color=fff&size=200'" alt="Course">
-                <div class="tag">{{ course.status || 'Active' }}</div>
-              </div>
-              <div class="course-body">
-                <h4>{{ course.name }}</h4>
-                <p>{{ course.description || 'No description available for this course.' }}</p>
-                <div class="course-footer">
-                  <div class="progress-bar">
-                    <div class="progress" style="width: 45%"></div>
-                  </div>
-                  <span class="percentage">45%</span>
-                </div>
-              </div>
-            </div>
-          }
+
+        <div class="activity-item">
+          <div class="activity-icon" style="background: var(--warning-light); color: var(--warning);">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="activity-details">
+            <div class="activity-text"><strong>New Exam</strong> created for <strong>Physics 101</strong></div>
+            <div class="activity-time">1 hour ago</div>
+          </div>
         </div>
-      }
-    </section>
-  </main>
+      </div>
+      <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; background: var(--bg-main); color: var(--primary); border: 1px solid var(--primary-light);">
+        View All Activity
+      </button>
+    </div>
+  </div>
 </div>

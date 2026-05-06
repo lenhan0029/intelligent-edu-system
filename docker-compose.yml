@@ -295,6 +295,78 @@ services:
       - edu-network
     restart: unless-stopped
 
+  org-service:
+    build: ./backend/org-service
+    container_name: org-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/org_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      APP_JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5
+      EUREKA_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 10
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+      - edu-network
+    restart: unless-stopped
+
+  analytics-service:
+    build: ./backend/analytics-service
+    container_name: analytics-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/analytics_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      APP_JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5
+      EUREKA_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 10
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+      - edu-network
+    restart: unless-stopped
+
+  content-service:
+    build: ./backend/content-service
+    container_name: content-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/content_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      APP_JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      EUREKA_INSTANCE_LEASE_RENEWAL_INTERVAL_IN_SECONDS: 5
+      EUREKA_INSTANCE_LEASE_EXPIRATION_DURATION_IN_SECONDS: 10
+      EUREKA_CLIENT_REGISTRY_FETCH_INTERVAL_SECONDS: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+      - edu-network
+    restart: unless-stopped
+
 networks:
   edu-network:
     driver: bridge

@@ -20,6 +20,9 @@ public class Exam {
     @Column(name = "course_id")
     private UUID courseId;
 
+    @Column(name = "organization_id")
+    private Long organizationId;
+
     private String title;
     private Integer duration;
     

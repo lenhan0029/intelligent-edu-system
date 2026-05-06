@@ -1,16 +1,32 @@
 package com.edu.scheduleservice.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Table(name = "attendance")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Attendance {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(name = "schedule_id", nullable = false)
     private UUID scheduleId;
-    private UUID studentId;
+
+    @Column(name = "student_id", nullable = false)
+    private Long studentId;
+
+    @Column(nullable = false)
     private String status;
-    private Date recordedAt;
+
+    @Column(nullable = false)
+    private LocalDate date;
 }

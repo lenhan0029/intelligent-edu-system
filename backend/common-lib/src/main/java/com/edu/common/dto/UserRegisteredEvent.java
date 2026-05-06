@@ -14,4 +14,6 @@ public class UserRegisteredEvent {
     private String email;
     private String fullName;
     private String username;
+    private String organizationId;
+    private java.util.Set<String> roles;
 }

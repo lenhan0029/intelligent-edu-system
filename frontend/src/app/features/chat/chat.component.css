@@ -1,0 +1,20 @@
+.chat-item.active {
+  background: var(--primary-light) !important;
+}
+
+.chat-item.active .chat-name {
+  color: var(--primary);
+}
+
+.messages-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-area::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.sent {
+  flex-direction: row-reverse;
+}

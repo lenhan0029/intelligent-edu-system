@@ -23,6 +23,9 @@ public class UserProfile {
 
     private String avatar;
 
+    @Column(name = "organization_id")
+    private Long organizationId;
+
     private Date dob;
 
     private String gender;

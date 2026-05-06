@@ -66,6 +66,18 @@ spring:
           uri: lb://log-service
           predicates:
             - Path=/api/logs/**
+        - id: org-service
+          uri: lb://org-service
+          predicates:
+            - Path=/api/organizations/**
+        - id: analytics-service
+          uri: lb://analytics-service
+          predicates:
+            - Path=/api/analytics/**
+        - id: content-service
+          uri: lb://content-service
+          predicates:
+            - Path=/api/contents/**
 
 springdoc:
   api-docs:
@@ -90,6 +102,12 @@ springdoc:
         url: /api/files/v3/api-docs
       - name: Log Service
         url: /api/logs/v3/api-docs
+      - name: Org Service
+        url: /api/organizations/v3/api-docs
+      - name: Analytics Service
+        url: /api/analytics/v3/api-docs
+      - name: Content Service
+        url: /api/contents/v3/api-docs
   cache:
     disabled: true
 

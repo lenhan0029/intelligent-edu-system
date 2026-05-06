@@ -21,6 +21,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     private String email;
     private String password;
     private boolean isActive;
+    private Long organizationId;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 
@@ -35,6 +36,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
                 user.getEmail(),
                 user.getPasswordHash(),
                 user.isActive(),
+                user.getOrganizationId(),
                 authorities,
                 null
         );

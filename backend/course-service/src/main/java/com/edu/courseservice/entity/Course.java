@@ -23,8 +23,12 @@ public class Course {
     
     @Column(name = "teacher_id")
     private UUID teacherId;
+
+    @Column(name = "organization_id")
+    private Long organizationId;
     
     private String status;
+    private java.math.BigDecimal price;
     
     @Column(name = "start_date")
     private Date startDate;

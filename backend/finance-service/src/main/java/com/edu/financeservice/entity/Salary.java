@@ -6,10 +6,11 @@ import java.util.UUID;
 import java.math.BigDecimal;
 
 @Entity
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Salary {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID teacherId;
+    private Long teacherId;
     private BigDecimal amount;
     private String period;
     private Date paidAt;

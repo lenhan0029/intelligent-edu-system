@@ -37,6 +37,9 @@
         <module>notification-service</module>
         <module>file-service</module>
         <module>log-service</module>
+        <module>org-service</module>
+        <module>analytics-service</module>
+        <module>content-service</module>
         <module>common-lib</module>
     </modules>
 
